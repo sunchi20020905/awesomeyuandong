@@ -1,0 +1,283 @@
+from datetime import datetime
+import nonebot
+import pytz
+from aiocqhttp.exceptions import Error as CQHttpError
+import random
+
+#这是一个定时在特定群聊发送信息的功能
+@nonebot.scheduler.scheduled_job('cron',hour='8') #八点准时发送信息
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai')) #地区设定
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message=f'八点啦，新的一天又开始啦~')
+        await bot.send_group_msg(group_id=539098853,
+                                 message=f'起床上课啦，专业课等着你')
+        await bot.send_group_msg(group_id=539098853,
+                                 message='每天早上一杯水，健康快乐一百年！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='8',minute='30') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='9') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass    
+@nonebot.scheduler.scheduled_job('cron',hour='9',minute='30') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='10') #十点准时发送信息
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    num = random.randint(1,3)
+    if num==1:
+        f='十点啦～早课辛苦啦，起身活动活动吧！'
+    elif num==2:
+        f='下课了嘛！辛苦啦辛苦啦o*￣▽￣*ブ'
+    else:
+        f='下课啦下课啦，休息一下才能更好地出发呀'
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message=f)
+        await bot.send_group_msg(group_id=539098853,
+                                 message='俯卧撑做了没有呢？')
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+        
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='10',minute='30') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='11') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass   
+@nonebot.scheduler.scheduled_job('cron',hour='11',minute='30') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass 
+@nonebot.scheduler.scheduled_job('cron',hour='12') #十二点准时发送信息
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message=f'''十二点啦\n元冬也吃个午饭\n许阳和JK也要好好吃饭呀''')
+    except CQHttpError:
+        pass
+    
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='13') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='13',minute='30') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='14')
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass    
+@nonebot.scheduler.scheduled_job('cron',hour='14',minute='30') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='15') #下午三点准时发送信息
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message=f'下午三点啦\n不知道你们的午后时光还愉快嘛\n你们每天都要甜甜的呀')
+        await bot.send_group_msg(group_id=539098853,
+                                 message='俯卧撑做了没有呢？')
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='15',minute='30') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='16') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='16',minute='30') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='17') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='17',minute='30') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+
+@nonebot.scheduler.scheduled_job('cron',hour='18') #下午六点准时发送信息
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message=f'下午六点啦\n许阳和JK要好好吃晚饭呀\n身体是革命的本钱ヾ◍°∇°◍ﾉﾞ')
+        await bot.send_group_msg(group_id=539098853,
+                                 message='俯卧撑做了没有呢？')
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='19') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='20') #下午八点准时发送信息
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    num = random.randint(1,3)
+    if num==1:
+        f='晚上八点啦！今天的工作做完了嘛～'
+    elif num==2:
+        f='晚上八点到了，不知道JK和许阳有没有洗漱完毕准时坐到电脑前呢？'
+    else:
+        f='晚上八点啦，开始自习吧！元冬也要学习了！'
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message=f)
+        await bot.send_group_msg(group_id=539098853,
+                                 message='俯卧撑做了没有呢？')
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='21') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='22') 
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='23') #下午十一点准时发送信息
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message=f'晚上十一点啦\n许阳和JK工作完就要好好休息呀\n祝你们今晚愉快呢~')
+        await bot.send_group_msg(group_id=539098853,
+                                 message='俯卧撑做了没有呢？')
+        await bot.send_group_msg(group_id=539098853,
+                                 message='本群提醒喝水小助手提醒jk和许阳按时喝水呀！')
+    except CQHttpError:
+        pass
+@nonebot.scheduler.scheduled_job('cron',hour='23',minute='30') #下午十一点半准时发送信息
+async def _():
+    bot = nonebot.get_bot()
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    try:
+        await bot.send_group_msg(group_id=539098853,
+                                 message=f'晚上十一点半啦\n如果明天想要早起的话就快点结束工作吧～')
+    except CQHttpError:
+        pass
