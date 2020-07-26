@@ -1,0 +1,20 @@
+from nonebot import on_command, CommandSession
+from nonebot import on_natural_language, NLPSession, IntentCommand
+from jieba import posseg
+import re
+import os
+import datetime
+import sys
+#引用库
+@on_command('shutdown',aliases=('关机',))
+async def shutdown(session:CommandSession):
+    count=session.get('count',prompt='你确定要关机么')
+    rejex=' 关|是|确定|对|嗯'#正则表达式匹配命令
+    print(re.findall(rejex,count))
+    if re.findall(rejex,count)!=[]:
+        await session.send('成') 
+        os.system('shutdown /s /t 0')#启用os系统命令确认关机\
+#关键词
+@on_natural_language(keywords={'关个机','关电脑'})
+async def _(session:NLPSession):
+    return IntentCommand(90.0,'shutdown')
