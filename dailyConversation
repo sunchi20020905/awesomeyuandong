@@ -1,0 +1,83 @@
+from nonebot import on_command, CommandSession
+from nonebot import on_natural_language, NLPSession, IntentCommand
+import re
+import random
+#引用库
+myFile=open('awesome/plugins/dailyconversation/dailyconver.txt','r',encoding='utf-8')
+content=myFile.read()
+myFile.close
+#读取自带语料库文件
+dailyconverDict={}#自带语料库文件以字典格式调用
+dailyData=content.splitlines()#分行读取
+keylist=[]
+keywordlist=[]
+keyRE=[]#关键词正则表达式
+for o in dailyData:
+    if '。'in o:#跳过文件由于手机或者电脑输入格式产生的空行
+        p=o.split('。')#根据。分离关键词
+        np=p[0].lstrip()#去掉第一个关键词由于手机或者电脑输入格式产生的空格
+        send=p[3]#读取最后一个信息作为数据
+        keyR=np+'|'+p[1]+'|'+p[2]#读取三个关键词作为字符串
+        keyRE.append(keyR)
+        dailyconverDict[keyR]=send#对应关系
+@on_command('daily',aliases=('在吗','在嘛'))
+async def daily(session: CommandSession):
+    while True:
+        if session.is_first_run:
+            np=session.get('np',prompt='找我什么事')#支持多次执行
+        else:
+            np=session.get('np')
+        rejex='没事了|问完了'#结束语句正则表达式匹配
+        some=re.findall(rejex,np)
+        if some!='':
+            if some!=[]:
+                await session.send('嗯嗯')
+                break#结束程序
+        for i in keyRE:
+            if re.findall(i,np)!='':
+                if re.findall(i,np)!=[]:
+                    await session.send(dailyconverDict[i])
+                else:
+                    continue#如果读到的词中包含keyRE[i]中的任何一个，就读取keyRE[i]这个key对应的value作为回答
+        session.state.pop('np')#从回答字典里排除回答，进行下一次问答
+#添加回答    
+@on_command('add',aliases=('添加回答',))
+async def add(session:CommandSession):
+    addNote=session.get('addNote',prompt='说')
+    addFile=open('awesome/plugins/dailyconversation/dailyconver.txt','r',encoding='utf-8')
+    content=addFile.read()
+    addFile.close()#保存之前的文档
+    addFile=open('awesome/plugins/dailyconversation/dailyconver.txt','w',encoding='utf-8')
+    print(content,'\n',addNote,file=addFile)#按照指定格式新增文档内容
+    addFile.close()
+    await session.send('长知识了')#添加回答过程结束
+#关键词
+@on_natural_language(keywords={'长知识','长见识','添加答案','调教'})
+async def _(session:NLPSession):
+    return IntentCommand(90.0,'add')
+@on_command('goodmorning',aliases=('早安','早上好','早'))
+async def goodmorning(session:CommandSession):
+    num = random.randint(1,3)
+    if num==1:
+        f='新的一天开始啦！早上好~'
+    elif num==2:
+        f='早安呀，今天也要加油呀！'
+    else:
+        f='早上好呀小可爱'
+    await session.send(f)
+
+@on_command('goodnight',aliases=('晚安',))
+async def goodnight(session:CommandSession):
+    num = random.randint(1,3)
+    if num==1:
+        f='今天辛苦啦，好好休息~晚安呀'
+    elif num==2:
+        f='好梦呀，快去睡吧别玩手机了哦'
+    else:
+        f='你也晚安，小可爱'
+    await session.send(f)
+
+
+
+
+
