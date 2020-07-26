@@ -1,0 +1,44 @@
+from nonebot import on_command, CommandSession
+from nonebot import on_natural_language, NLPSession, IntentCommand
+import re
+file=open('awesome/plugins/hanguohua/hanguohua.txt','r',encoding='utf-8')
+content=file.read()
+data=content.splitlines()
+keyList=[]
+cou=[]
+couset={}
+@on_command('hanguohua',aliases=('韩国话','韩语'))
+async def hanguohua(session: CommandSession):
+        keyRE=session.get('keyRE',prompt='告诉我关键词')
+        keyre=keyRE.split('，')
+        for i in keyre:
+            keyre=i.rstrip()   
+            keyList.append(keyre)
+            coulist=len(keyList)
+        for i in keyList:
+            for j in data:
+                if len(keyList)==1:
+                    if re.findall(i,j)!=[]:                   
+                        cou.append(j)
+                elif len(keyList)==2:
+                    if re.findall(keyList[0],j)!=[]:
+                        if re.findall(keyList[1],j)!=[]:
+                            cou.append(j)
+                elif len(keyList)==3:
+                    if re.findall(keyList[0],j)!=[]:
+                        if re.findall(keyList[1],j)!=[]:
+                            if re.findall(keyList[2],j)!=[]:
+                                cou.append(j)
+        couset=set(cou)
+        cou.clear()
+        cousat=list(couset)
+        for i in cousat:            
+            await session.send(i)
+        keyList.clear()
+#关键词
+@on_natural_language(keywords={'韩语','韩国话'})
+async def _(session:NLPSession):
+    return IntentCommand(90.0,'hanguohua')
+
+                    
+    
