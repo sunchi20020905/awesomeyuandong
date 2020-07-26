@@ -1,0 +1,85 @@
+from nonebot import on_command, CommandSession
+from nonebot import on_natural_language, NLPSession, IntentCommand
+from jieba import posseg
+import re
+import random
+import os
+import datetime
+import sys
+import readJSON
+#读取库
+#以下内容为插件
+def 读JSON文件(fileName=""):
+    import json
+    if fileName!='':
+        strList = fileName.split("。")
+        if strList[len(strList)-1].lower() == "json":
+            with open(fileName,mode='r',encoding="utf-8") as file:
+                return json.loads(file.read())#读取json格式的文件，包括所有垫话语料
+data = readJSON.读JSON文件("data.json")
+名人名言 = data["famous"] 
+前面垫话 = data["before"] 
+后面垫话 = data['after'] 
+废话 = data['bosh'] 
+重复度 = 2
+#完善数据
+def 洗牌遍历(列表):
+    global 重复度
+    池 = list(列表) * 重复度
+    while True:
+        random.shuffle(池)
+        for 元素 in 池:
+            yield 元素
+#随机抽取元素
+下一句废话 = 洗牌遍历(废话)
+下一句名人名言 = 洗牌遍历(名人名言)
+def 来点名人名言():
+    global 下一句名人名言
+    xx = next(下一句名人名言)
+    xx = xx.replace(  "a",random.choice(前面垫话) )
+    xx = xx.replace(  "b",random.choice(后面垫话) )
+    return xx
+def 另起一段():
+    xx = "。"
+    xx += "\r\n"
+    xx += "    "
+    return xx
+#定义使用函数
+@on_command('goupibutong',aliases=('狗屁不通文章生成器','废话生成器'))
+async def goupibutong(session: CommandSession):
+    counta=session.get('subject',prompt='想要生成什么主题和长度的废话呢？')
+    count=counta.splitlines()
+    subject=count[0]
+    length=int(count[1])
+    #读取用户需求
+    for i in subject:
+        tmp = str()
+        while ( len(tmp) < length ) :
+            分支 = random.randint(0,100)
+            if 分支 < 5:
+                tmp += 另起一段()
+            elif 分支 < 20 :
+                tmp += 来点名人名言()
+            else:
+                tmp += next(下一句废话)
+        #生成一些废话
+        tmp = tmp.replace("x",subject)        
+    await session.send(tmp)
+#消息分割（支持直接在输入命令的同时输入要求）
+@goupibutong.args_parser
+async def _(session: CommandSession):
+    stripped_arg = session.current_arg_text.strip()
+    if session.is_first_run:
+        if stripped_arg:
+            session.state['goupibutong'] = stripped_arg
+        return
+    if not stripped_arg:
+        session.pause('没有输入主题呢')
+    session.state[session.current_key] = stripped_arg
+#关键词
+@on_natural_language(keywords={'狗屁不通','瞎写'})
+async def _(session:NLPSession):
+    return IntentCommand(90.0,'goupibutong')
+
+
+
