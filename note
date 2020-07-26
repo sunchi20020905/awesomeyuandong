@@ -1,0 +1,76 @@
+from nonebot import on_command, CommandSession
+from nonebot import on_natural_language, NLPSession, IntentCommand
+from jieba import posseg
+import re
+import random
+import os
+import datetime
+import sys
+#引用库
+@on_command('note', aliases=('记备忘录',))
+async def note(session: CommandSession):
+    note=session.get('note',prompt="记吧")
+    note_count=note.splitlines()#分离指令
+    a=os.path.exists('awesome/plugins/note/'+note_count[0]+'.txt')#命名文件
+    if a==True:
+        file=open('awesome/plugins/note/'+note_count[0]+'.txt', 'r',encoding='utf-8')
+        content=file.read()
+        file.close()
+        #如果此命名文件已存在则读取文件全部内容
+    else:
+        content=''
+        #如果此命名文件不存在则不读取内容
+    file=open('awesome/plugins/note/'+note_count[0]+'.txt', 'w',encoding='utf-8')
+    print(content,file=file)
+    #保存原有的文件内容
+    for i in note_count:
+        if i!=note_count[0]:
+            print(i,file=file)
+    await session.send('记完了')
+    #写入新的文件内容
+    file.close()
+#支持同时写入命令和文件内容
+@note.args_parser
+async def _(session: CommandSession):
+    stripped_arg = session.current_arg_text.strip()
+    if session.is_first_run:
+        if stripped_arg:
+            session.state['note'] = stripped_arg
+        return
+    if not stripped_arg:
+        session.pause('没法记了')
+    session.state[session.current_key] = stripped_arg
+#查找备忘录内容
+@on_command('viewnote',aliases=('查备忘录',))
+async def viewnote(session: CommandSession):
+    choose=session.get('viewnote',prompt='查吧')
+    file=open('awesome/plugins/note/'+choose+'.txt', 'r',encoding='utf-8')
+    content=file.read()
+    await session.send(content)
+    await session.send("查完了")
+    file.close()
+#支持同时写入命令和查找文件名
+@viewnote.args_parser
+async def _(session: CommandSession):
+    stripped_arg = session.current_arg_text.strip()
+    if session.is_first_run:
+        if stripped_arg:
+            session.state['viewnote'] = stripped_arg
+        return
+    if not stripped_arg:
+        session.pause('查不着')
+    session.state[session.current_key] = stripped_arg
+#关键词
+@on_natural_language(keywords={'记事本','记个东西'})
+async def _(session:NLPSession):
+    return IntentCommand(90.0,'note')
+@on_natural_language(keywords={'找备忘录','找记事本','看记事本'})
+async def _(session:NLPSession):
+    return IntentCommand(90.0,'viewnote')
+    
+
+
+    
+
+
+
