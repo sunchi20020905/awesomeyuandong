@@ -1,0 +1,22 @@
+from nonebot import on_command, CommandSession
+from nonebot import on_natural_language, NLPSession, IntentCommand
+import random
+import os
+#引入库
+
+@on_command('baobao', aliases=('想哭', '想要抱抱'))
+async def baobao(session: CommandSession):
+    num = random.randint(2,10)#随机生成不同数量的‘抱’字
+    b='抱'
+    a=b*num
+    await session.send(a)
+    path=f'xuyuandong/dodge'
+    count=0
+    for file in os.listdir(path):
+        count=count+1#计数图片数量
+    num = random.randint(1,count)#随机发送一张表情包
+    await session.send(f"[CQ:image,file=file:../酷Q Pro/data/image/xuyuandong/dodge/{num}.jpg]")
+#关键词设定
+@on_natural_language(keywords={'呜','害','愁人','抱','想哭'})
+async def _(session:NLPSession):
+    return IntentCommand(90.0,'baobao')
