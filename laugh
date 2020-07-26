@@ -1,0 +1,18 @@
+from nonebot import on_command,CommandSession
+from nonebot import on_natural_language,NLPSession,IntentCommand
+import random
+
+#提供和聊天者对着笑的功能
+@on_command('laugh',aliases=('哈哈',)) #关键词匹配
+async def weather(session:CommandSession):
+    n = random.randint(5,9)
+    Msg = '哈'* n #生成随机5-9个哈字
+    await session.send(Msg)
+
+@on_natural_language(keywords={'哈哈'}) #输入大于两个的哈，都会有回应
+async def _(session:NLPSession):
+    return IntentCommand(90.0,'laugh')
+
+@on_natural_language(keywords={'哈尔滨','马大哈'}) #如果有这种特殊含义的词，返回信度0，不回复
+async def _(session:NLPSession):
+    return IntentCommand(0,'laugh')
