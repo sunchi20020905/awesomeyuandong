@@ -1,0 +1,104 @@
+from nonebot import on_command, CommandSession
+from nonebot import on_natural_language, NLPSession, IntentCommand
+import re
+from random import sample
+from random import choice
+import os
+import datetime
+import sys
+#引用库
+list=[]#菜名合集
+listRed=[]#红楼梦菜名
+listEng=[]#高级菜名
+dictEng={}#高级菜名对应关系
+listsome=[]#家常菜合集
+redDict={}#红楼梦菜系及其做法
+chooseRList=[]#保存红楼菜菜名使用的list
+aFile=open('awesome/plugins/eatwhat/红楼梦菜名.txt','r',encoding='utf-8')
+contenta=aFile.read()
+aFile.close()
+bFile=open('awesome/plugins/eatwhat/菜系菜名.txt','r',encoding='utf-8')
+contentb=bFile.read()
+bFile.close()
+cFile=open('awesome/plugins/eatwhat/高级菜名.txt','r',encoding='utf-8')
+contentc=cFile.read()
+cFile.close()
+#打开文件读取信息
+dataa=contenta.splitlines()
+for i in dataa:
+    num=dataa.index(i)#获取下标
+    if num%4==0:#读取菜名
+        list.append(i)
+        listRed.append(i)
+        redDict[i]={}#菜名对应来源，历史，做法字典
+        redDict[i]['来源']=dataa[num+1]
+        redDict[i]['历史']=dataa[num+2]
+        redDict[i]['做法']=dataa[num+3]
+datab=contentb.splitlines()
+for i in datab:
+    list.append(i)
+    listsome.append(i)#读取菜名
+datac=contentc.splitlines()
+for i in datac:
+    a=i.split('：')#分离英文和中文
+    b=a[1].split(' ')
+    list.append(b[0])
+    listEng.append(a[0])
+    dictEng[a[0]]=a[1]#建立对应关系
+@on_command('eatwhat',aliases=('吃什么',))
+async def eatwhat(session: CommandSession):
+    choose=sample(list,5)#从list中随机抽出五个元素
+    await session.send(choose[0])
+    await session.send(choose[1])
+    await session.send(choose[2])
+    await session.send(choose[3])
+    await session.send(choose[4])
+    await session.send('这些怎么样？')
+@on_command('eatred',aliases=('红楼菜',))
+async def eatred(session:CommandSession):
+    chooseRed=choice(listRed)#从listRed中随机抽取一个元素　
+    chooseRList.append(chooseRed)
+    count=session.get('count',prompt=chooseRed+'尝试一下？')
+    rejexa='怎么做|做法|菜谱'
+    rejexb='书里|来历|出处'
+    rejexc='历史'
+    #正则表达式关键词匹配要问的问题
+    if re.findall(rejexa,count)!=[]:
+        await session.send(redDict[chooseRList[0]]['做法'])
+    elif re.findall(rejexb,count)!=[]:
+        await session.send(redDict[chooseRList[0]]['来源'])
+    elif re.findall(rejexc,count)!=[]:
+        await session.send(redDict[chooseRList[0]]['历史'])
+    chooseRList.clear()
+@on_command('eatenglish',aliases=('中餐外吃',))
+async def eatenglish(session:CommandSession):
+    chooseEng=choice(listEng)#从listEng中随机抽取一个
+    await session.send(chooseEng)
+    await session.send('对，就是你想到的那个')
+    await session.send(dictEng[chooseEng])
+    await session.send('想不到吧！')
+@on_command('eathome',aliases=('家常菜',))
+async def eathome(session:CommandSession):
+    choosesome=sample(listsome,3)#从listsome中随机抽取三个
+    await session.send(choosesome[0])
+    await session.send(choosesome[1])
+    await session.send(choosesome[2])
+    await session.send('要记得按时吃饭哦～')
+#关键词
+@on_natural_language(keywords={'吃什么','吃点啥'})
+async def _(session:NLPSession):
+    return IntentCommand(90.0,'eatwhat')
+@on_natural_language(keywords={'红楼梦','红楼菜'})
+async def _(session:NLPSession):
+    return IntentCommand(90.0,'eatred')
+@on_natural_language(keywords={'高级菜','外国菜','英文菜名'})
+async def _(session:NLPSession):
+    return IntentCommand(90.0,'eatenglish')
+@on_natural_language(keywords={'家常菜'})
+async def _(session:NLPSession):
+    return IntentCommand(90.0,'eathome')
+
+
+
+
+
