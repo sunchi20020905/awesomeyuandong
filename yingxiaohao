@@ -1,0 +1,51 @@
+from nonebot import on_command, CommandSession
+from nonebot import on_natural_language, NLPSession, IntentCommand
+from jieba import posseg
+import re
+import random
+import os
+import datetime
+import sys
+#引用库
+@on_command('yingxiaohao',aliases=('营销号',))
+async def yingxiaohao(session: CommandSession):
+    event=session.get('event',prompt='想要营销点什么？')
+    event_count=event.splitlines()
+    subject=event_count[0]
+    eventone=event_count[1]
+    eventtwo=event_count[2]
+    #读取命令
+    contenta=subject+eventone+'是怎么回事呢？'
+    contentb=subject+'相信大家都很熟悉。'
+    contentc='但是，'+subject+eventone+'又是怎么一回事呢？下面就让小编带大家一起了解吧！'
+    contentd=subject+eventone+'其实就是'+eventtwo+'。'
+    contente='大家可能会非常惊讶，'+subject+'怎么会'+eventone+'呢？'
+    contentf='但事实就是这样，小编也非常惊讶。'
+    contentg='这就是关于'+subject+eventone+'的事情啦。'
+    await session.send(contenta)
+    await session.send(contentb)
+    await session.send(contentc)
+    await session.send(contentd)
+    await session.send(contente)
+    await session.send(contentf)
+    await session.send(contentg)
+    await session.send("大家有什么想法呢？欢迎在评论区告诉小编一起讨论哦！")
+#支持直接处理命令和需求
+@yingxiaohao.args_parser
+async def _(session: CommandSession):
+    stripped_arg = session.current_arg_text.strip()
+    if session.is_first_run:
+        if stripped_arg:
+            session.state['yingxiaohao'] = stripped_arg
+        return
+    if not stripped_arg:
+        session.pause('没有内容呢')
+    session.state[session.current_key] = stripped_arg
+#关键词
+@on_natural_language(keywords={'营销','胡说八道'})
+async def _(session:NLPSession):
+    return IntentCommand(90.0,'yingxiaohao')
+
+
+
+
