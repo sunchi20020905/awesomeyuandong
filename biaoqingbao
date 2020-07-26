@@ -1,0 +1,20 @@
+from nonebot import on_command, CommandSession
+from nonebot import on_natural_language, NLPSession, IntentCommand
+import random
+import os
+#引用库
+@on_command('biaoqingbao', aliases=('找表情包', ))
+async def biaoqingbao(session: CommandSession):
+    choose=session.get('biaoqingbao',prompt='想要什么样的表情包呢？')
+    count=0
+    path=f'xuyuandong/biaoqingbao/{choose}'
+    for file in os.listdir(path):
+        count=count+1
+    num=random.randint(1,count)#计数图片数量并随机发送一张
+    await session.send(f"[CQ:image,file=file:../酷Q Pro/data/image/xuyuandong/biaoqingbao/{choose}/{num}.jpg]")
+    await session.send('看看这个怎么样？')
+#关键词
+@on_natural_language(keywords={'斗图','表情包'})
+async def _(session:NLPSession):
+    return IntentCommand(90.0,'biaoqingbao')
+    
